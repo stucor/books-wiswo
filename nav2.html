@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+
+
+<style>
+
+body {
+	margin: 0;
+	font-family: 'Montserrat', sans-serif;
+}
+
+.wrapper {
+ 	display: grid;
+    grid-template-columns: 20% 60% 20%;
+}
+
+.wrapper p {
+	font-size:21px;
+}
+
+/********** Page Breaks **********/
+
+.pagebreak {
+    height: 1px;
+    color: #E28F2E;
+    background: #E28F2E;
+    font-size: 0;
+    border: 0;
+}
+
+
+
+/********** General book styling **********/
+
+.content{
+	margin-left: 40px;
+	margin-right: 40px;
+	text-align: justify;
+}
+
+.content h1 {
+    font-style: italic;
+    font-weight:400;
+    text-align: right;
+    font-size: 40px;
+    padding-top:70px;
+    padding-bottom:20px;
+
+}
+
+.content h2 {
+    font-weight: 800;
+	text-align: left;
+    font-size: 24px;
+    padding-top:40px;
+    line-height: 1.3em;
+}
+
+.content p {
+	margin:0;
+}
+
+.content p.indent {
+    text-indent: 50px;
+}
+
+.content h2.preface {
+	font-style: italic;
+	font-weight: normal;
+}
+
+.content p.AFCMquote {
+    font-style: italic;
+    line-height: 1.3;
+	text-align: center;
+    padding-top:20px;
+    padding-bottom:20px;
+}
+
+/********** Top navigation bar **********/
+
+.topnav {
+	overflow: hidden;
+}
+
+.topnav a {
+	float: left;
+	color: #000;
+	text-align: center;
+	padding: 14px 10px 5px 10px;
+	text-decoration: none;
+	font-size: 12px;
+}
+
+.topnav a:hover {
+	font-weight: bold;
+	cursor:pointer;
+}
+
+.topnav p {
+	margin-top:7px;
+	margin-bottom: 0;
+}
+
+.topnav a:active {
+	background-color: #aaa;
+}
+
+.topnav-right {
+	float: right;
+}
+
+.librarybtn {
+	float:left;
+	height: 28px;
+	margin-top:24px;
+	margin-left:10px;
+	background-color: #fff;
+	border: 1px solid #bbb;
+	cursor:pointer;
+}
+
+.librarybtn a {
+	margin: 0;
+	padding: 5px 10px 5px 10px;
+	font-size: 16px;
+}
+
+
+
+/********** Contents & Book title **********/
+
+.topnav2 {
+	overflow: hidden;
+	border-top: 1px solid lightgrey;
+}
+
+.tocbtn {
+    width: 28%;
+    float: left;
+    padding: 10px;
+    box-sizing: border-box;
+	cursor:pointer;
+}
+	
+.tocbtn:hover {
+	font-weight: bold;
+}
+
+.booktitle {
+    width: 44%;
+    float: left;
+    padding: 10px;
+	font-size: 20px;
+	text-align:center;
+    box-sizing: border-box;
+}
+
+
+
+/********** Top and bottom bars **********/
+
+#topbar {
+	z-index: 2;
+	background-color: #fff;
+	position: sticky;
+	position: -webkit-sticky;
+	top:0;
+	width: 100%;
+	display: block;
+	transition: top 0.3s;
+	box-shadow: 0 2px 6px 0 #777;
+}
+
+#bottombar {
+	z-index: 2;
+	position: sticky;
+	position: -webkit-sticky;
+	background-color: #fff;
+	bottom: 0;
+	width: 100%;
+	text-align: center;
+	padding: 10px 0 10px 0;
+	box-shadow: 0 -2px 6px 0px #777;	
+	transition: bottom 0.3s;
+}
+
+/********** Progress bar **********/
+
+.progress-container {
+  width: 100%;
+  height: 8px;
+  background: #ccc;
+}
+
+.progress-bar {
+  height: 8px;
+  background: #E28F2E;
+  width: 0%;
+}
+
+/********** Side Navigation - The Table of Contents **********/
+
+.sidenav {
+	height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    background-color: #fff;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 0;
+	-webkit-box-shadow: 6px 0 6px -3px #888;
+	box-shadow: 6px 0 6px -3px #888;
+}
+
+.sidenav ul {
+	padding: 20px;
+}
+
+.sidenav ul li {
+    padding: 8px 8px 8px 0;
+    text-decoration: none;
+    font-size: 16px;
+    color: #000;
+    display: block;
+    transition: 0.3s;
+	cursor: pointer;
+}
+
+.sidenav li.sub {
+	padding-left:20px;
+
+}
+
+.sidenav li:hover {
+    font-weight: bold;
+}
+
+
+
+/********** Modals **********/
+
+/* The Modal (background) */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 3; 
+    padding-top: 100px; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+}
+
+/* Modal Content */
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    margin: auto;
+    padding: 0;
+    border: 1px solid lightgrey;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0} 
+    to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+
+.modal-header {
+    padding: 2px 5px;
+    background-color: white;
+	font-size: 14px;
+    color: black;
+    text-align:center;
+	border-bottom: 1px solid lightgrey;
+}
+
+/* The Close Button */
+.modal-header .close {
+    float: right;
+    color: black;
+	font-size:28px;
+    position:relative;
+    top:-8px;
+}
+
+.modal-header .close:hover,
+.modal-header .close:focus {
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-body {
+	padding: 2px 16px;
+    text-align:center;
+}
+
+/********** responsive **********/
+
+
+
+
+@media all and (max-width: 1280px) {
+
+	.wrapper {
+		display: grid;
+		grid-template-columns: 10% 80% 10%;
+	}
+}
+
+
+@media all and (max-width: 980px) { 
+
+	.wrapper {
+		display: grid;
+		grid-template-columns: 7% 86% 7%;
+	}
+
+	.wrapper p {
+		font-size:18px;
+	}	
+}
+
+
+@media screen and (max-width: 768px) {
+
+	.wrapper {
+		display: grid;
+		grid-template-columns: 4% 92% 4%;
+	}
+}
+
+
+@media screen and (max-width: 480px) {
+
+	.booktitle {
+		width: 72%;
+		font-size: 14px;
+		font-weight: bold;
+	}
+	.tocbtn {
+		font-size:15px;
+	}
+	.topnav p {
+		display:none;
+	}
+	.topnav a {
+		padding: 10px 7px 0 7px;
+	}
+	.logo {
+		width:32px;
+	}
+	.librarybtn {
+		margin-top:10px;
+		height: 28px;
+	}
+	.librarybtn a {
+		padding: 5px 5px 5px 5px;
+		font-size: 14px;
+	}
+	
+	.wrapper {
+		display: grid;
+		grid-template-columns: 5% 90% 5%;
+	}
+
+	.wrapper p {
+		font-size:16px;
+	}
+
+	.content{
+		margin-left: 20px;
+		margin-right: 20px;
+	}	
+}
+
+@media screen and (max-width: 320px) {
+
+	.booktitle {
+		font-size: 12px;
+	}
+	.tocbtn {
+		font-size:12px;
+	}
+	.tocbtn:hover {
+		font-weight: normal;
+	}
+	.topnav a {
+		padding: 10px 4px 0 4px;
+	}
+	.librarybtn {
+		margin-top:14px;
+		height: 23px;
+	}
+	.librarybtn a {
+		padding: 3px 4px 4px 4px;
+		font-size: 13px;
+	}
+
+	.wrapper {
+		display: grid;
+		grid-template-columns: 0 100% 0;
+	}	
+
+}
+
+
+</style>
+</head>
+<body>
+<!-- The Modal -->
+<div id="Modal" class="modal">
+  <div id="ModalContent" class="modal-content">
+    <div id="ModalHeader" class="modal-header">
+      <span class="close">&times;</span>
+      <div id="ModalHeaderText"></div>
+    </div>
+    <div id="ModalBody" class="modal-body">
+		<div id="ModalSearch">
+			Nothing to see in the 'Search' Section yet
+		</div>		
+		<div id="ModalDetails">
+			Nothing to see in the 'Details' Section yet
+		</div>
+		<div id="ModalDisplay">
+			<br>
+			<p>Hide UI on Scroll: <input type="checkbox" id="hideUICheck" unchecked></p>
+			<p></p>
+			<p>Show Page Breaks: <input type="checkbox" id="showPageCheck" unchecked></p>
+			<p></p>	
+		</div>
+		<div id="ModalDownload">
+			Nothing to see in the 'Download' Section yet
+		</div>
+		<div id="ModalDownloadAlert">
+			<p>Downloads of Epub, Mobi and PDF versions are only available when you are connected to the Internet.</p>
+		</div>
+	</div>
+  </div>
+</div>
+
+<div id="tocnav" class="sidenav">
+	<ul id="TOC">
+		<li id="TOC1" data-page="i">Preface</li>
+		<li id="TOC2" data-page="1">Benefits of Mettā</li>
+		<li id="TOC3" class="sub" data-page="1">Huge benefits</li>
+		<li id="TOC4" class="sub" data-page="3">Unconditional love</li>
+		<li id="TOC5" data-page="5">Let's plant now!</li>
+		<li id="TOC6" class="sub" data-page="5">Preparing the field</li>
+		<li id="TOC7" class="sub" data-page="7">Collecting the wholesome</li>
+		<li id="TOC8" class="sub" data-page="8">Preparing the seeds</li>
+		<li id="TOC9" class="sub" data-page="11">Bright light</li>
+	</ul>	
+</div>
+
+<div id="topbar">
+	<div class="topnav" id="myTopnav">
+		<a href="http://wisdomandwonders.org/"><img class="logo" src="readericons/logo.png"></a>
+		<div class="librarybtn"><a href="#">Library</a></div>
+		
+		<div class="topnav-right">
+			<a id="searchBtn"><img src="readericons/icons8-search-32.png"><p>Search</p></a>
+			<a id="detailsBtn"><img src="readericons/icons8-info-32.png"><p>Details</p></a>
+			<a id="displayBtn"><img src="readericons/icons8-font-size-32.png"><p>Display</p></a> 
+			<a id="audioBtn"><img src="readericons/icons8-speaker-32.png"><p>Audio</p></a>
+			<a id="downloadBtn"><img src="readericons/icons8-installing-updates-32.png"><p>Download</p></a>
+		</div>
+
+	</div>
+	<div class="topnav2">
+		<div id="tocBtn" class="tocbtn">&#10095; Contents</div>
+		<div class="booktitle">A Flower Called Mettā</div>
+	</div>
+</div>
+
+<div class="wrapper">
+<div></div>
+<div class="content">
+<span class="pageno" data-page="i"></span>
+<h2 id="TOCTarget1" class="preface">Preface</h2>
+<p>The Buddha once said that the mind of <em>mettā</em> was like the sound of a trumpet—a clear call over the land that could not be stopped or kept out by anything. It’s such a beautiful image; I love the thought of that sound reaching over the trees and forests, the cities and towns. Today, we might say it’s like a satellite, a message beaming across the whole earth. For all those who are lost, who have no-one, who suffer and don’t know why: there is someone who loves you.</p>
+<p class="indent">This is the gift of <em>mettā</em>, a gift that will change everything.</p>
+<p class="indent">But the Buddha also pointed out something else about trumpets. A crowd of people, attracted by the call, found the trumpet. But they’d never seen one before. They picked it up, wondering, “Where does the sound come from?” And they poked it and pulled it apart, looking for the sound—but no sound did they find.</p>
+<p class="indent">I used to be a musician, so I sympathize with their problem. I mean, have you ever tried to play a trumpet? It’s really hard! If you just try to pick one up and blow it, you’ll get nothing but a few sad squeaks, if you’re lucky. To learn it, you need someone to train you, who knows how to break down a hard task into many smaller ones, who knows when to encourage you, and when to tell you that enough is enough. And someone who can inspire you as a master of their craft.</p>
+<p class="indent">While still a young monk I was blessed to find such a teacher—Ajahn Mahā Chatchai. While many spoke of <em>mettā</em> meditation, he was the first one I knew who could break it down, clearly, step by step, and show you how it worked and how it all fit together. He taught me to find joy in meditation, to learn the art of stillness. Through all my many—often naive and ignorant—questions, he showed nothing but patience <span class="pageno" data-page="ii"></span>and kindness. He so clearly manifests the power of <em>mettā</em>, with such humility, grace, and intelligence, that he has inspired me to not just be a better meditator and a better monk, but a better human being. It has been an honor to be his student, and I will always be grateful for what he has done for me.</p>
+<p class="indent">May you be happy, and may you find joy in mettā meditation. And may you be the trumpet call that sounds over the land, bringing love to the hearts of all.</p>
+&nbsp;
+<p>SUJATO BHIKKHU
+July 9, 2017</p>
+&nbsp;
+<span class="pageno" data-page="iii"></span>
+<hr width="50%" />
+
+<span class="pageno" data-page="1"></span>
+<h1 id="TOCTarget2">Benefits of Mettā</h1>
+<h2 id="TOCTarget3">Huge benefits</h2>
+<p>When our mind is peaceful, we are happy and know how to let go of the unwholesome.</p>
+<p class="indent">Peace comes from a still mind that shies away from the unwholesome. This is a skilful or wholesome mind.</p>
+<p class="AFCMquote">The nature of the wholesome is calm and cool to the body and the heart.</p>
+<p>Cultivation of mindfulness in our meditation practice is beneficial to our life, both while we are awake and while we are asleep. We are protected by the practice. This is called:</p>
+<p class="AFCMquote">“Protection of the dhamma”</p>
+<p>The purpose of meditation is to cultivate peace and calm of the mind. This, in turn, will foster understanding of the dhamma, especially of the truth of the elements (<em>dhātu</em>), and of aggregates or groups of existence (<em>khandha</em>). This also develops understanding of our practice so that we could overcome all worries, which are causes of our sufferings. Understanding will arise only when our mind is still and peaceful, and when we have time to contemplate reality as it is.</p>
+<span class="pageno" data-page="2"></span><p class="AFCMquote">Practicing dhamma renders peace and happiness.</p>
+<p>Cultivating <em>mettā</em> gives the practitioner unsurpassable benefits. Even when we cultivate <em>mettā</em> in the first zone or the first stage of <em>mettā</em> meditation, we will experience exquisite emotions of peace, well-being, fulfilment, a powerful mind, happiness and joy.</p>
+<p class="AFCMquote">Like a lotus at dawn which slowly unfurls its petals to the warmth of the sun, our mind, while spreading <em>mettā</em>, is soft, gentle and joyful.</p>
+<p>Hence, the preliminary goal of planting a tree called “<em>mettā</em>” is to cultivate peace from the chaos, caused by what we see, hear and touch. The mind that runs amok and gets involved with outside disturbances is scattered and, thus, lacks power. A powerful mind is one that is composed and still.</p>
+<p class="AFCMquote">A peaceful mind brings us serenity and happiness.</p>
+<p>When our mind is peaceful and contented, the mindfulness, strong with a solid foundation, can help us skilfully and calmly address all the negativities that surround us – be they forms, tastes, smells, sounds, or physical contacts. Our mind is not irritated much when people angrily shout at us or give us a hostile eye.</p>
+<p class="indent">A contented mind is the condition in which the mind is in <em>samādhi</em>, calm and free from turmoil. It is the mind that is free from all the unwholesome activities and thoughts, including craving for mundane pleasures. Even pleasure from eating is mundane. Thinking about and wishing to eat a favourite <span class="pageno" data-page="3"></span>food or listening to sounds adorned with passion is flurry and worry. Once the mind is free from this defilement, our mind will become peaceful.</p>
+<p class="indent">The peace from <em>samādhi</em> based on <em>mettā</em> is happiness beyond imagination. It is beyond ordinary people’s understanding. Sitting on a beautiful beach getting refreshed by a nice breeze, eating good food, reading a good book, sipping cool drinks, you may think that this is utmost happiness, but that kind of happiness is less than one-trillionth of the happiness from <em>samādhi</em>.</p>
+<h2 id="TOCTarget4">Unconditional love</h2>
+<p>Love that follows softness and gentleness of a wholesome mind is called mettā.</p>
+<p class="AFCMquote"><em>Mettā</em> is unconditional love.</p>
+<p><em>Mettā</em> is love that never demands that things have to be certain ways before they are embraced.</p>
+<p class="indent">What we are practicing now is to cultivate a mind that is soft, gentle, and relaxed. This kind of mind is compared to the leaves, branches, or stem of the tree called <em>mettā</em>.</p>
+<p class="AFCMquote">The root of mettā is love: love and goodwill for all objects and sentient beings.</p>
+<p>Each individual’s <em>mettā</em> state is different. For some who come to my monastery, I will give them a sapling of <em>mettā</em> to plant in their garden, but for some, I give them a seed. Those who have received a seed are those who have no prior hint of what <span class="pageno" data-page="4"></span><em>mettā</em> in their heart will look like as it has neither roots nor trunk nor leaves.</p>
+<p class="indent">Whenever and wherever the loving feeling that is soft and gentle and unconditional arises in our heart, though the feeling is still like a young seedling, we will experience magic, as <em>mettā</em> will bestow upon our heart immense power.</p>
+<p class="indent">When the <em>mettā</em> sapling that we have been nurturing has developed into a strong solid tree which sprouts stunning flowers, our soft and gentle mind will be empowered by incomparable bliss.</p>
+&nbsp;
+
+<hr width="50%" />
+
+<span class="pageno" data-page="5"></span>
+<h1 id="TOCTarget5">Let's plant now!</h1>
+<h2 id="TOCTarget6">Preparing the field</h2>
+<p>Cultivating <em>mettā</em> requires skills, so we need to prepare ourselves for the training. Planting a <em>mettā</em> tree in our heart is not a hasty job, we need to be patient.</p>
+<p class="indent">If we compare <em>mettā</em> to saplings that we want to plant in our heart, what I have given you are young saplings that are not yet strong enough and thus need our loving care.</p>
+<p class="AFCMquote">Good tending is caring: ‘tend’ to ‘<em>mettā</em>’ with ‘care’.</p>
+<p><em>Mettā</em> needs to be planted. Having been planted, it can then grow. Sometimes we use the term ‘cultivating <em>mettā</em>’. Successful cultivation of <em>mettā</em> is like growing a fruit tree; we have to imagine that we are a farmer skilled at growing plants.</p>
+<p class="indent">The sapling that we are about to plant is young and thus vulnerable to the elements. So, before we plant it, we have to prepare the soil well.</p>
+<p class="AFCMquote">If our mission were to plant a tree, the first task would be to prepare the soil.</p>
+<p>The <em>mettā</em> tree has huge benefits. Before you plant one in your heart, you should make sure that it is well prepared: cleansed <span class="pageno" data-page="6"></span>and supple, the same way you prepare soil, ensuring that it’s fluffy and full of nutrients, suitable for the growth of our sapling. <em>Saddhā</em> or confidence and <em>viriya</em> or diligence, are essential nutrients for the soil of our heart.</p>
+<p class="AFCMquote">Without <em>saddhā</em>, a dhamma tree can never grow.</p>
+<p><em>Saddhā</em> is not merely faith but also understanding. It encompasses confidence, conviction and trust. This enriching fertilizer for the soil of our heart is part of the five faculties: conviction (<em>saddhā</em>), perseverance (<em>viriya</em>), mindfulness (<em>sati</em>), stillness of the mind (<em>samādhi</em>), and wisdom (<em>pañña</em>). When you have wisdom and stillness, you will not allow the mind to be sucked into harmful emotions—not allowing weeds to thrive. Otherwise, our dhamma or <em>mettā</em> plant will struggle and finally wither and die.</p>
+<p class="AFCMquote">Before you plant a <em>mettā</em> tree, prepare your heart. Cultivate softness and tenderness while letting go of harshness and hesitation.</p>
+<p>The ground for planting a <em>mettā</em> tree is our own mind. The most suitable ground is a mind rich in dhamma—mindfulness, contentment, perseverance, caring, carefulness, and thoughtfulness. We should try to savour, associate and collect forms, feelings, and thoughts that are wholesome and conducive to dhamma practice.</p>
+<p class="indent">We come here to meditate so as to train the mind to stay with our body; to learn to be aware of our posture. This is the preparation needed to plant the seed of <em>mettā</em> into our mind and nurture it to become a healthy tree which will produce beautiful flowers and delicious fruit.</p>
+<p class="indent"><span class="pageno" data-page="7"></span>Getting to be aware of our body is the preparation process in the same way that farmers prepare their land before planting. If our land is well prepared, the trees will flourish. If not, they will not grow well, or not at all! Likewise, if we want to plant a <em>mettā</em> tree, we need to clear our mind from weeds of unwholesome experiences.</p>
+<p class="indent">When we focus our attention on the body to clear the mind of unwholesome entanglements, it is similar to pulling weeds from the soil, tilling the soil, and enriching it with compost. Our mind also needs to be fertilised. Perseverance and <em>saddhā</em> are excellent fertilisers, the topic of which will be further explained later.</p>
+<p class="indent">As for the planting stage, I have prepared you all to ready the mind by focusing on the state of your body: face and body erect, shoulders relaxed, etc. This will help your mind to be peaceful or familiar with peace. The familiarity with awareness or mindfulness is like soil that has been properly tilled and thus is suitable for planting.</p>
+<p class="indent">Just as the <em>mettā</em> sapling is young and weak, so is the feeling of <em>mettā</em> in our mind, as <em>mettā</em> hasn’t yet been firmly planted in our heart.</p>
+<p class="indent">The planting process includes preparing the mind, practicing awareness of the body and removing weeds harmful to the mind. After this caring preparation, our mind will become calmer and calmer.</p>
+<h2 id="TOCTarget7">Collecting the wholesome</h2>
+<p>Dedication to learning and practice is needed before our mind can be well developed with unshakeable confidence in the dhamma and perseverance to walk the path. Once this dedi<span class="pageno" data-page="8"></span>cation is achieved, we can be skilfully selective in collecting wholesome feelings and let go of the unwholesome.</p>
+<p class="AFCMquote">Accumulating that which is beneficial, nourishing, and wholesome is accumulating <em>pāramī</em> or perfections.</p>
+<p>Increasing your dosage of wholesome feelings is a solid foundation to your practice. This is the same as preparing fertile soil for your plants. All that I’ve been teaching is to prepare your mind.</p>
+<p class="AFCMquote">Good preparation of the mind is half the success of dhamma practice.</p>
+<p>The reason that most people feel that they have barely made progress is mainly that they haven’t readied their mind before actual meditation.</p>
+<h2 id="TOCTarget8">Preparing the seeds</h2>
+<p>In general, each day the disagreeable, both observable and unobservable, visits us more than the agreeable. This affliction will oppress us both physically and emotionally. Meanwhile, we seek to find pleasure in such things as listening to music, eating out, or travelling. This is our natural reaction when things around us signpost that we are unhappy.</p>
+<p class="indent">Our instinct tells us to pursue happiness by seeking pleasures such as satisfactory forms, sounds, and thoughts. However, these are never-ending pursuits—once found, they’ll soon be discarded. Then, one after another form of happiness is to be chased. A beautiful picture—when seen for the second, third, fourth and fifth time—can lose its attraction and become boring. This is the nature of things.</p>
+<p class="indent"><span class="pageno" data-page="9"></span>The very first step is to prepare good seeds—peace and serenity. These two qualities are like knowledge and experience in the workplace, valuable to you everywhere you go. When dhamma or higher virtues, such as <em>samādhi</em>, are in our heart, it doesn’t matter whether you are travelling out of the city or out of this world, <em>samādhi</em> will always be with you.</p>
+<p class="AFCMquote">A special quality of <em>samādhi</em> is to give us serenity and happiness.</p>
+<p>All kinds of <em>samādhi</em> will bring about serenity and happiness; hence, wise people should seek to train the mind to be still and peaceful. This is like an umbrella to provide happy shade and protect our heart against the rain of misery. <em>Mettā</em> meditation is especially conducive to bring us calm and happiness in all aspects of our life, be it at work or at school. Cultivating <em>mettā</em> is always beneficial.</p>
+<p class="AFCMquote">Meditation is a good use of time.</p>
+<p>I advise that you all do your best to cultivate the true essence of <em>mettā</em>—a soft and gentle heart. This could be difficult for those who have never trained themselves before or those that have an unskilful mind.</p>
+<p class="indent">Of course, it is hard for us defiled beings to be free from greed, hatred and delusion, but we could temporarily mitigate them by developing mindfulness, such as when we focus our awareness on our body: with face and body erect, and shoulders relaxed; as well as our physical sense of sitting on the floor. This kind of training bears fruit.</p>
+<p class="AFCMquote">Our ultimate goal is to cultivate <em>mettā</em>. If our mind is not still nor grounded enough, we can’t develop <em>mettā</em>.</p>
+<p><span class="pageno" data-page="10"></span><em>Mettā</em> is such a gossamer-delicate feeling that it is difficult to bring up in our mind. Therefore, our first basic training will focus on mindfulness or <em>sati</em>, and stillness or <em>samādhi</em>.</p>
+<p class="AFCMquote">A strong and solid foundation of the mind comes from training of the mind, or meditation.</p>
+<p>We develop <em>sati</em> to build a solid and strong foundation for our mind. A well-grounded mind is happy, whether standing, walking, seated or lying down.</p>
+<p class="AFCMquote">A solid mind is soft and gentle.</p>
+<p>Meditation or <em>kammatthāna</em> is the base or place of work of the mind. When we focus our awareness on our body, we aim to get <em>sati</em> to work, not allowing the mind to wander aimlessly. During meditation, our mind is with <em>sati</em>.</p>
+<p class="indent">Most days we are without <em>sati</em> rather than with <em>sati</em>. Those who don’t meditate tend to be without <em>sati</em>, and lack mindfulness. When we come into contact with outside elements through the five senses, we feel pleased or displeased towards these sense perceptions. We are even moved by thinking about the past or the future. Both pleasure and displeasure degrade a mind that lacks solid foundation. When this kind of mind experiences the highs and lows of happiness and sorrow, it feels them with great intensity.</p>
+<p class="AFCMquote">Developing <em>sati</em> and meditation is to train our mind to become unwavering and mindfulness to function.</p>
+<p>If our <em>sati</em> has no foundation, it doesn’t function. Without foundation, there’s no base for <em>sati</em> to stand on. <em>Sati</em> needs something to stand on such as the body. Mindfulness of the <span class="pageno" data-page="11"></span>body means our body is the foundation for <em>sati</em>. An example of this practice is to learn to be aware of our erect body, with the head up and shoulders relaxed. When we train ourselves this way, we will be more grounded and the mind will be calm and at peace with whatever comes into contact with it.</p>
+<p class="AFCMquote">Developing mindfulness is to strengthen our mind, and be happy.</p>
+<p>The more we practice watching our mind, the more skilled our mindfulness is, and the more we are aware of our physical state. The clearer our awareness of the body is, the more skilful our mind.</p>
+<h2 id="TOCTarget9">Bright light</h2>
+<p class="AFCMquote">Our <em>sati</em> is like a compact fluorescent lamp.</p>
+<p>When it is first switched on, the light is relatively dim, but after a while, the light gets brighter and brighter.</p>
+<p class="indent">Mindfulness of our body is like the light from a fluorescent lamp on our body. At first, our <em>sati</em> is just a glimmer. So, if you can’t focus well, don’t worry. Allow things to be. Simply be aware of what’s going on, allowing the light to shine on. After a while, the light will become stronger.</p>
+<p class="indent">Likewise, mindfulness of our body starts small with a small part. After having worked for a longer period, our <em>sati</em> will become more and more active until it finally becomes fully functional. Then, our mind will be brightly lit with <em>sati</em>.</p>
+<p class="indent">When mental irritants have been eliminated, we will feel happy—nothing is there to bother us. Irritants, whether pleasing or displeasing, harm our mind, but when sati is with us, we can experience them with unruffled calm.</p>
+<span class="pageno" data-page="END"></span>
+</div>
+<div></div>
+</div> 
+
+<div id="bottombar">
+	<div id="PageNo">i</div>
+	<div class="progress-container"><div class="progress-bar" id="progressBar"></div></div> 
+</div>
+
+<script>
+
+//Settings Variables - Used for cookies
+
+var hideUIOnScroll = false;
+var showPageBreaks = false;
+var sidebarIsOpen = false;
+
+// Settings
+
+var hideUICheck = document.getElementById("hideUICheck");
+
+hideUICheck.onclick = function () {
+    if (this.checked){
+        hideUIOnScroll = true;
+    } else {
+        hideUIOnScroll = false;
+    }
+}
+
+var showPageCheck = document.getElementById("showPageCheck");
+
+showPageCheck.onclick = function () {
+
+    var elems = document.getElementsByClassName("pageno");
+
+    if (this.checked){
+	
+	    for (var i = 0; i < elems.length; i++) {
+			elems[i].innerHTML = "<br><br><hr class='pagebreak'><br><br>";
+		}
+        showPageBreaks = true;
+		
+    } else {
+	    for (var i = 0; i < elems.length; i++) {
+			elems[i].innerHTML = "";
+		}
+        showPageBreaks = false;
+    }
+
+	findPageNumber();
+	fillProgressBar();	
+	
+}
+
+// TOC Navigation - uses event delegation on UL LI
+
+document.getElementById("TOC").addEventListener("click", function(e) {
+
+	hideUIOnScroll = false;
+	// e.target is the clicked element!
+	// If it was a list item
+	if(e.target && e.target.nodeName == "LI") {
+		// List item found!  create target and scroll to it
+		var tocNumber = e.target.id.replace("TOC", "");
+		var toctarget = "TOCTarget" + tocNumber;
+		var elmnt = document.getElementById(toctarget);
+ 		elmnt.scrollIntoView();
+		window.scrollBy(0, -100); // scroll the toctarget below the topnav bar so you can see it
+		var pagenumber = e.target.getAttribute("data-page"); // set the page numbers
+		document.getElementById("PageNo").innerHTML = pagenumber;
+	}
+	// wait until scroll has been performed then reset hideUIOnScroll
+	setTimeout(resetHOS, 500);
+
+});
+
+
+function resetHOS()  {
+var elem = document.getElementById("hideUICheck");
+
+	if (elem.checked == true){
+		hideUIOnScroll = true;
+		} else {
+		hideUIOnScroll = false;	
+	}
+}
+
+// hide and show the top and bottom bars by placing them off canvas when window is scrolled up (show) and down (hide) - this is a setting/cookie: hideUIOnScroll & populate page number and progress bar
+
+var prevScrollpos = window.pageYOffset;
+
+window.onscroll = function() {
+//console.log ("in onscroll hideUIOnScroll = " + 	hideUIOnScroll);
+var currentScrollPos = window.pageYOffset;
+//console.log ("In onscroll hideUIOnScroll = " + hideUIOnScroll);
+	if (hideUIOnScroll) {
+		if ((prevScrollpos > currentScrollPos)) {
+			document.getElementById("topbar").style.top = "0";
+			document.getElementById("bottombar").style.bottom = "0";
+			if (sidebarIsOpen) {
+				setTimeout(function(){showSideNav();},150); //wait until the top and bottom bars have been rendered before calculating where the sidebar should be positioned.
+			}
+		} else {
+			var scrollDifference = prevScrollpos - currentScrollPos;
+				document.getElementById("topbar").style.top = "-125px";
+				document.getElementById("bottombar").style.bottom = "-50px";
+				document.getElementById("tocnav").style.width = "0";
+		}
+	}
+
+	prevScrollpos = currentScrollPos;
+	//populate page number and progress bar
+	findPageNumber();
+	fillProgressBar();
+}
+
+window.addEventListener('resize', function () {
+	findPageNumber();
+	fillProgressBar();
+});
+
+//find page numbers and write them to the bottom bar when scrolling
+
+function findPageNumber() {
+
+    var allpagenumbers = document.querySelectorAll(".pageno");
+	var pagenumber;
+    
+    for (var i = 0; i < allpagenumbers.length; i++) {
+
+		var element = allpagenumbers [i];
+
+        pagenumber = element.getAttribute("data-page");
+
+        if (isElementInViewport (element)) {
+			document.getElementById("PageNo").innerHTML = pagenumber;
+			break;
+		}
+	}
+	
+
+}
+
+function isElementInViewport (el) {
+
+    var rect = el.getBoundingClientRect();
+
+    return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && 
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth) 
+    );
+}
+
+function fillProgressBar() {
+  var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+  var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  var scrolled = (winScroll / height) * 100;
+  document.getElementById("progressBar").style.width = scrolled + "%";
+}
+
+//Open and close the TOC (Table of Contents) side navigation bar
+var tocbtn = document.getElementById("tocBtn");
+
+tocbtn.onclick = function() {
+
+	var elem = document.getElementById("tocnav");
+
+	if (elem.style.width == "300px")  {
+		elem.style.width = "0";
+		sidebarIsOpen = false;
+		this.innerHTML = "&#10095; Contents";
+	} else {
+		showSideNav();
+		sidebarIsOpen = true;
+		this.innerHTML = "&#10094; Contents";
+	}
+}
+
+function showSideNav() {
+		var elem = document.getElementById("tocnav");
+		var tocposition = document.getElementById("tocBtn").getBoundingClientRect().bottom;
+		tocposstr = tocposition +"px";
+		elem.style.top = tocposstr;
+		elem.style.width = "300px";	
+}
+
+
+
+// Modals
+
+// Get the modal
+var modal = document.getElementById('Modal');
+var modalheader = document.getElementById('ModalHeader');
+var modalheadertext = document.getElementById('ModalHeaderText');
+var modalcontent = document.getElementById('ModalContent');
+var modalbody = document.getElementById("ModalBody");
+
+// Get the content in the modal body
+var modalsearch = document.getElementById('ModalSearch');
+var modaldetails = document.getElementById('ModalDetails');
+var modaldisplay = document.getElementById('ModalDisplay');
+var modaldownload = document.getElementById('ModalDownload');
+var modaldownloadalert = document.getElementById('ModalDownloadAlert');
+
+
+// Get the buttons that open the modals
+var searchbtn = document.getElementById("searchBtn");
+var detailsbtn = document.getElementById("detailsBtn");
+var displaybtn = document.getElementById("displayBtn");
+var audiobtn = document.getElementById("audioBtn");
+var downloadbtn = document.getElementById("downloadBtn");
+
+// Get the <span> element that closes the modal
+var closebtn = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, create the modal content and style settings and open the modal 
+
+searchbtn.onclick = function() {
+
+	setModalStyle ("standard", "Search");
+	
+// hide the rest and show the right modal
+    modalsearch.style.display = "block";
+    modaldetails.style.display = "none";
+    modaldisplay.style.display = "none";
+    modaldownload.style.display = "none";
+    modaldownloadalert.style.display = "none";
+	
+    modal.style.display = "block";
+}
+
+detailsbtn.onclick = function() {
+
+	setModalStyle ("standard", "Details");
+	
+// hide the rest and show the right modal
+    modalsearch.style.display = "none";
+    modaldetails.style.display = "block";
+    modaldisplay.style.display = "none";
+    modaldownload.style.display = "none";
+    modaldownloadalert.style.display = "none";
+	
+    modal.style.display = "block";
+}
+
+displaybtn.onclick = function() {
+
+	setModalStyle ("standard", "Display Settings");
+	
+// hide the rest and show the right modal
+    modalsearch.style.display = "none";
+    modaldetails.style.display = "none";
+    modaldisplay.style.display = "block";
+    modaldownload.style.display = "none";    
+    modaldownloadalert.style.display = "none";
+	
+	modal.style.display = "block";
+}
+
+audiobtn.onclick = function() {
+// PLAY AUDIO FUNCTIONS TO GO HERE ########################################
+}
+
+downloadbtn.onclick = function() {
+
+	var alerttext = "<p>Downloads of Epub, Mobi and PDF versions are only available when you are connected to the Internet.</p>";
+	var text = "<p>You can download Epubs, Mobi's and PDFs here</p>";
+
+	if (navigator.onLine) {
+		setModalStyle ("standard", "Downloads");
+		modalsearch.style.display = "none";
+		modaldetails.style.display = "none";
+		modaldisplay.style.display = "none";
+		modaldownload.style.display = "block";    
+		modaldownloadalert.style.display = "none";
+	} else {
+		setModalStyle ("alert", "Download");
+		modalsearch.style.display = "none";
+		modaldetails.style.display = "none";
+		modaldisplay.style.display = "none";
+		modaldownload.style.display = "none";    
+		modaldownloadalert.style.display = "block";
+	}	
+
+    modal.style.display = "block";
+	
+
+}
+
+// Set styles for modals
+function setModalStyle (style, heading) {
+
+	if (style === 'standard') {
+	    /* standard modal style */
+		modalheader.style.background = "white";
+		modalheader.style.color = "black";
+		closebtn.style.color = "black";
+		modalheadertext.innerHTML = heading;
+		modalcontent.style.width = "80%";
+	} else {
+		/* alert box modal style */
+		modalheader.style.background = "#E28F2E";
+		modalheader.style.color = "white";
+		closebtn.style.color = "white";
+		modalheadertext.innerHTML = "Alert";
+		modalcontent.style.width = "50%";
+	}
+}
+
+// When the user clicks on <span> (x), close the modal
+closebtn.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+</script>
+</body>
+</html>
